@@ -2,6 +2,7 @@ import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
 
 import static com.codeborne.selenide.Condition.visible;
@@ -12,51 +13,75 @@ public class PracticeFormTest {
 
     @BeforeAll
     static void setUp() {
-        Configuration.browserSize = "1920×1080";
-        Configuration.timeout = 5000;
+        /**
+         * Настраиваем браузер, таймер страницы увеличен до минуты из-за долгой работы драйвера
+         */
+        Configuration.browserSize = "1920x1080";
+        Configuration.timeout = 10000;
         Configuration.baseUrl = "https://demoqa.com";
+        Configuration.pageLoadTimeout = 60000;
     }
 
     @Test
     void myFirstSomeTest() {
+        /**
+         * Переменные, дату рождения пришлось разбить на несколько
+         */
         PracticeFormPage page = new PracticeFormPage();
         page.openPage("/automation-practice-form");
-
         String firstName = "Chiki";
         String lastName = "Bamboni";
         String gender = "Male";
         String email = "boba@biba.com";
-        String mobile = "88005553535";
-        String dob = "05.05.2005";
+        String mobile = "8005553535";
+        String dobYear = "1995";
+        String dobMonth = "September";
+        String dobDay = "10";
         String subjects = "Maths";
-        String hobbies = "Sports";
+        List<String> hobbies = (List.of("Sports", "Music"));
         String curAddress = "Zazhopinsk";
 
+        /**
+         * Ниже идет собственно работа с элементами страницы
+         */
         page.setFirstname(firstName);
         page.setLastname(lastName);
         page.setEmail(email);
-        page.setgenderInput();
+        page.setGender(gender);
         page.setMobile(mobile);
-        page.setDateBirth(dob);
+        page.setDateOfBirth(dobDay, dobMonth, dobYear);
         page.setSubjects(subjects);
-        page.setHobbies();
+        page.setHobbies(hobbies);
         page.setAddress(curAddress);
         page.submitForm();
 
+        // Сначала на всякий проверяем что форма видна вообще
         $(".table-responsive").shouldBe(visible);
 
+
+        /**
+         * Вот тут вызываем метод сбора инфы из финальной таблички
+         */
         Map<String, String> results = page.getSubmissionResults();
 
-        results.keySet().forEach(System.out::println);
+/*      Это использовалось для отладки сравнения ключей
+        results.keySet().forEach(System.out::println);*/
+
+
+        /**
+         * Вот тут проводим сравнение полученных ранее данных с ожидаемыми из изначальных переменных
+         */
+        // Строка для правильности сравнения нескольких значений хобби
+        String expectedHobbies = String.join(", ", hobbies);
 
         assertThat(results)
-                .containsEntry("Student name", firstName + " " + lastName)
-                .containsEntry("Student email", email)
+                .containsEntry("Student Name", firstName + " " + lastName)
+                .containsEntry("Student Email", email)
                 .containsEntry("Gender", gender)
                 .containsEntry("Mobile", mobile)
-                .containsEntry("Date of Birth", dob)
+                .containsEntry("Date of Birth", dobDay + " " + dobMonth + "," + dobYear)
                 .containsEntry("Subjects", subjects)
-                .containsEntry("Hobbies", hobbies)
+                .containsEntry("Hobbies", expectedHobbies)
                 .containsEntry("Address", curAddress);
     }
 }
