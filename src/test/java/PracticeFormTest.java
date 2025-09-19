@@ -28,7 +28,7 @@ public class PracticeFormTest {
          * Переменные, дату рождения пришлось разбить на несколько
          */
         PracticeFormPage page = new PracticeFormPage();
-        page.openPage("/automation-practice-form");
+        page.openPage();
         String firstName = "Chiki";
         String lastName = "Bamboni";
         String gender = "Male";
@@ -56,7 +56,10 @@ public class PracticeFormTest {
         page.submitForm();
 
         // Сначала на всякий проверяем что форма видна вообще
-        $(".table-responsive").shouldBe(visible);
+        // Старый метод проверки
+        //$(".table-responsive").shouldBe(visible);
+        // Новый с использованием метода
+        page.tableVisible();
 
 
         /**

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
 
@@ -15,7 +16,7 @@ public class PracticeFormPage {
     /**
      * Вот тут я постарался разными способами (конечно с пояснениями от ии) добраться до разных элементов
      */
-    private String BASE_URL = "https://demoqa.com";
+    private String BASE_URL = "/automation-practice-form";
     private SelenideElement firstnameInput = $("input#firstName");
     private SelenideElement lastnameInput = $("input#lastName");
     private SelenideElement emailInput = $("input[placeholder=\"name@example.com\"]");
@@ -31,7 +32,7 @@ public class PracticeFormPage {
     private SelenideElement hobbiesSports = $("#hobbies-checkbox-1");
     private SelenideElement hobbiesReading = $("#hobbies-checkbox-2");
     private SelenideElement hobbiesMusic = $("#hobbies-checkbox-3");
-
+    private SelenideElement tableResponsive = $(".table-responsive")
     private SelenideElement currentaddressInput = $("#currentAddress");
     private SelenideElement submitButton = $("#submit");
 
@@ -40,8 +41,8 @@ public class PracticeFormPage {
      * @param value это значения которые будут принимать методы для работы с элементами
      */
 
-    public void openPage(String value) {
-        open(BASE_URL + value);
+    public void openPage() {
+        open(BASE_URL);
     }
 
     void setFirstname(String value) {
@@ -98,6 +99,10 @@ public class PracticeFormPage {
         subjectsInput.click();
         subjectsInput.setValue(value);
         subjectsInput.pressEnter();
+    }
+
+    void tableVisible () {
+        tableResponsive.shouldBe(visible);
     }
 
 /*  Старый вариант работы с хобби
