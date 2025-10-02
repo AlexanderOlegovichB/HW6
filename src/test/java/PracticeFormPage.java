@@ -32,7 +32,7 @@ public class PracticeFormPage {
     private SelenideElement hobbiesSports = $("#hobbies-checkbox-1");
     private SelenideElement hobbiesReading = $("#hobbies-checkbox-2");
     private SelenideElement hobbiesMusic = $("#hobbies-checkbox-3");
-    private SelenideElement tableResponsive = $(".table-responsive")
+    private SelenideElement tableResponsive = $(".table-responsive");
     private SelenideElement currentaddressInput = $("#currentAddress");
     private SelenideElement submitButton = $("#submit");
 
